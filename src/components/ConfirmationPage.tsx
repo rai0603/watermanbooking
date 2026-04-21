@@ -179,7 +179,7 @@ export function ConfirmationPage({
             <dt className="text-slate-500">LINE 官方帳號</dt>
             <dd className="text-right">
               <a
-                href="https://line.me/R/ti/p/@waterman"
+                href="https://lin.ee/N83l3q2"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="font-semibold text-ocean-700 underline"
@@ -192,12 +192,12 @@ export function ConfirmationPage({
             <dt className="text-slate-500">加 LINE 短網址</dt>
             <dd className="text-right">
               <a
-                href="https://line.me/R/ti/p/@waterman"
+                href="https://lin.ee/N83l3q2"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="font-mono text-ocean-700 underline break-all"
               >
-                line.me/R/ti/p/@waterman
+                lin.ee/N83l3q2
               </a>
             </dd>
           </div>
