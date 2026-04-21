@@ -172,6 +172,52 @@ export function ConfirmationPage({
         </div>
       </div>
 
+      <div className="rounded-2xl border border-ocean-100 bg-white p-5 shadow-sm">
+        <h3 className="text-sm font-semibold text-slate-700">聯絡資訊</h3>
+        <dl className="mt-3 space-y-2 text-sm">
+          <div className="flex items-center justify-between gap-3">
+            <dt className="text-slate-500">LINE 官方帳號</dt>
+            <dd className="text-right">
+              <a
+                href="https://line.me/R/ti/p/@waterman"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="font-semibold text-ocean-700 underline"
+              >
+                @waterman
+              </a>
+            </dd>
+          </div>
+          <div className="flex items-center justify-between gap-3">
+            <dt className="text-slate-500">加 LINE 短網址</dt>
+            <dd className="text-right">
+              <a
+                href="https://line.me/R/ti/p/@waterman"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="font-mono text-ocean-700 underline break-all"
+              >
+                line.me/R/ti/p/@waterman
+              </a>
+            </dd>
+          </div>
+          <div className="flex items-center justify-between gap-3">
+            <dt className="text-slate-500">教練電話</dt>
+            <dd className="text-right">
+              <a
+                href="tel:+886918115406"
+                className="font-mono font-semibold text-slate-800"
+              >
+                陳教練 0918-115406
+              </a>
+            </dd>
+          </div>
+        </dl>
+        <p className="mt-3 text-xs leading-relaxed text-slate-500">
+          ※ 請以 LINE 聯絡為主，因出團或不明電話可能會漏接。
+        </p>
+      </div>
+
       <button
         type="button"
         onClick={onReset}

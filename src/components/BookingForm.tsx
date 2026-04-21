@@ -12,6 +12,7 @@ import type {
   BookingResult,
   OrderPriceBreakdown,
 } from "@/types/booking";
+import { Hero } from "./Hero";
 import { SectionSchedule } from "./SectionSchedule";
 import { SectionItems } from "./SectionItems";
 import { SectionSecret } from "./SectionSecret";
@@ -143,12 +144,7 @@ export function BookingForm() {
         className="mx-auto max-w-xl"
       >
         <div className="space-y-4 px-4 py-6">
-          <header className="mb-2">
-            <h1 className="text-xl font-bold text-ocean-700">
-              水行者海洋運動中心
-            </h1>
-            <p className="text-sm text-slate-500">現場預約表單</p>
-          </header>
+          <Hero />
 
           <SectionSchedule />
           <SectionItems />
