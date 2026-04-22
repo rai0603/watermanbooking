@@ -54,7 +54,6 @@ function validateInput_(input) {
     "customerName",
     "customerPhone",
     "customerEmail",
-    "customerLineId",
   ];
   for (let i = 0; i < required.length; i++) {
     const key = required[i];

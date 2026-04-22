@@ -125,12 +125,14 @@ export function ConfirmationPage({
                 {input.customerEmail}
               </dd>
             </div>
-            <div className="flex justify-between gap-3">
-              <dt className="text-slate-500">LINE ID</dt>
-              <dd className="text-right font-medium text-slate-800 break-all">
-                {input.customerLineId}
-              </dd>
-            </div>
+            {input.customerLineId && (
+              <div className="flex justify-between gap-3">
+                <dt className="text-slate-500">LINE ID</dt>
+                <dd className="text-right font-medium text-slate-800 break-all">
+                  {input.customerLineId}
+                </dd>
+              </div>
+            )}
             {input.notes && (
               <div className="flex justify-between gap-3">
                 <dt className="text-slate-500">備註</dt>

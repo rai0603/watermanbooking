@@ -22,6 +22,7 @@ var BOOKING_HEADERS = [
   "付款狀態",
   "匯款確認",
   "備註",
+  "LINE ID",
   "created_at",
   "items_json",
   "day_type",
@@ -45,8 +46,9 @@ function getBookingsSheet_() {
       .getRange(1, 1, 1, BOOKING_HEADERS.length)
       .setValues([BOOKING_HEADERS]);
     sheet.setFrozenRows(1);
-    // 姓名(G)、電話(H)、MAIL(I)、訂單編號(J) 整欄強制純文字，避免電話前導 0 被吃掉
+    // 姓名(G)、電話(H)、MAIL(I)、訂單編號(J)、LINE ID(O) 整欄強制純文字，避免電話前導 0 被吃掉
     sheet.getRange("G:J").setNumberFormat("@");
+    sheet.getRange("O:O").setNumberFormat("@");
   }
   return sheet;
 }
@@ -118,14 +120,16 @@ function appendBookingRow_(ctx) {
     "未付款",                   // 付款狀態
     "",                         // 匯款確認（客服手動）
     noteText,                   // 備註
+    input.customerLineId || "", // LINE ID
     new Date(),                 // created_at
     JSON.stringify(input.items),// items_json
     order.dayType,              // day_type
     "",                         // line_notified_at
   ];
   const targetRow = sheet.getLastRow() + 1;
-  // 寫入前先把姓名/電話/MAIL/訂單編號 設為純文字
+  // 寫入前先把姓名/電話/MAIL/訂單編號/LINE ID 設為純文字
   sheet.getRange(targetRow, 7, 1, 4).setNumberFormat("@");
+  sheet.getRange(targetRow, 15, 1, 1).setNumberFormat("@");
   sheet.getRange(targetRow, 1, 1, row.length).setValues([row]);
 }
 

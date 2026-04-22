@@ -50,8 +50,8 @@ export const bookingSchema = z
     customerEmail: z.string().email("Email 格式錯誤"),
     customerLineId: z
       .string()
-      .min(1, "請填 LINE ID")
-      .regex(/^[A-Za-z0-9_.-]+$/, "LINE ID 只能英數字、_ . -"),
+      .regex(/^[A-Za-z0-9_.-]*$/, "LINE ID 只能英數字、_ . -")
+      .default(""),
     notes: z.string().max(200, "備註最多 200 字").optional().default(""),
     agreedToTerms: z.literal(true, {
       errorMap: () => ({ message: "請勾選確認同意訂單內容與注意事項" }),

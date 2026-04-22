@@ -100,7 +100,9 @@ function buildLineMessage_(ctx) {
   lines.push("👤 " + input.customerName);
   lines.push("📞 " + input.customerPhone);
   lines.push("✉️ " + input.customerEmail);
-  lines.push("💬 " + input.customerLineId);
+  if (input.customerLineId) {
+    lines.push("💬 " + input.customerLineId);
+  }
   if (input.notes) {
     lines.push("📝 " + input.notes);
   }

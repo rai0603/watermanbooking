@@ -49,7 +49,7 @@ export function SectionContact() {
         </div>
 
         <div>
-          <FieldLabel required>LINE ID</FieldLabel>
+          <FieldLabel>LINE ID（選填）</FieldLabel>
           <input
             type="text"
             {...register("customerLineId")}
