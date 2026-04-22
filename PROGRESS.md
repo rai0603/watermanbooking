@@ -58,6 +58,22 @@
 
 ---
 
+## ✅ 2026-04-22：v1.1 微調
+
+### 改動
+
+- **LINE ID 改選填**：前端 schema regex 改 `*` 允許空字串、label 改「LINE ID（選填）」；Apps Script `validateInput_` 拿掉 `customerLineId` 必填；LINE 群組通知訊息只在有填時才顯示「💬」那列；確認頁同樣空值隱藏
+- **Google Sheet 新增第 15 欄「LINE ID」**：放在「備註」之後、系統欄位之前；手動在既有 Sheet 插欄 + 純文字格式；`SheetRepo.gs` 表頭與 row 對齊修正（`getRange("O:O").setNumberFormat("@")`）
+- **Hero 加一列「體驗遊程介紹」**：連到 `https://reurl.cc/O6YYdD`
+
+### 開發筆記網站同步更新（`ai-dev-notes`）
+
+- 新增 PROJECT 05 水行者預約系統卡片（10 年 WooCommerce + Pinpoint $159/年 vs 新系統 NT$ 0/月 對比）
+- 卡片加上「實際運作流程」四格 gallery（選活動 → 確認訂單 → LINE 通知 → Google Sheet），點擊 lightbox 放大
+- 線上：https://rai0603.github.io/ai-dev-notes/
+
+---
+
 ## 待辦
 
 - [ ] 2027 年初：補 `src/lib/twHolidays.ts` 的 2027 年國定假日
