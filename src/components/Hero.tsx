@@ -36,6 +36,19 @@ export function Hero() {
             <dt className="text-slate-500">集合地點：</dt>
             <dd>宜蘭縣蘇澳鎮跨港路 6 號（討海文化館旁）</dd>
           </div>
+          <div className="flex flex-wrap justify-center gap-x-1">
+            <dt className="text-slate-500">體驗遊程介紹：</dt>
+            <dd>
+              <a
+                href="https://reurl.cc/O6YYdD"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-ocean-700 underline break-all"
+              >
+                https://reurl.cc/O6YYdD
+              </a>
+            </dd>
+          </div>
         </dl>
       </div>
 
