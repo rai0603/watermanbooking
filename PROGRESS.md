@@ -74,7 +74,40 @@
 
 ---
 
+## ✅ 2026-05-10：v1.1.1 修復重複下單問題
+
+### Bug 症狀
+- 一位透過 AI 客服引導進預約頁的客戶，按下「送出訂單」後頁面卡在「送出中…」沒跳確認頁
+- Backend 卻已完整跑完（Sheet 寫入 + LINE 群組通知 + `line_notified_at` 已填）
+- 客戶以為失敗反覆嘗試，最後同一客戶建立了 3 筆訂單（WM-20260510-0002 ~ 0004）
+
+### 根因（推測，無法穩定重現）
+Apps Script Web App 的 302 redirect chain（`script.google.com` → `script.googleusercontent.com`）
+在 iframe 嵌 WordPress + AI 客服 widget 共存的環境下，response 偶爾沒辦法回到前端。
+fetch 永遠 hang 或被瀏覽器斷開，但 server 已完整處理。
+
+### Defensive fix（Phase A，純 frontend，commit `02b5d11`）
+- `apiClient.ts`：fetch 加 30 秒 `AbortController` timeout；錯誤分流為
+  - `ServerRejectedError`：server 明確 `{ ok: false }`（業務驗證失敗），可重試
+  - `UncertainSubmitError`：timeout / network / parse fail，**訂單可能已成立**，禁止重試
+- `BookingForm.tsx`：`UncertainSubmitError` 進入鎖定狀態
+  - 顯示明顯紅框：「⚠️ 系統未能確認回應，您的訂單可能已成立，請勿重複送出，請加 LINE 客服 @waterman 確認」
+  - 提供「重新整理表單」按鈕，必須手動 reload 才能再送單
+- `PriceBar.tsx`：lock 狀態下按鈕永久 disabled，文字改「請聯絡客服」
+
+### 殘留風險
+- 客戶仍可手動 reload 後再次送單 → 還是會建立一筆新訂單（無 server idempotency）
+- 此次 3 筆重複需人工跟客戶確認後刪除/標記取消
+
+### 待補（Phase B）
+- 後端 idempotency：frontend 在 form 初始化時產生 `clientRequestId`（`crypto.randomUUID()`），
+  每次送單帶上，backend 在 doPost 開頭查 Sheet 是否已有此 id，已存在就直接回傳既有訂單
+- 需手動操作：在 Google Sheet `bookings` 分頁尾端插一欄 `client_request_id`（純文字格式）
+
+---
+
 ## 待辦
 
+- [ ] **Phase B：後端 idempotency**（防止 reload 後仍重複送單）
 - [ ] 2027 年初：補 `src/lib/twHolidays.ts` 的 2027 年國定假日
 - [ ] Phase 4：訂單查詢、客服後台標記已付款、時段衝突擋單（人流變大再說）
