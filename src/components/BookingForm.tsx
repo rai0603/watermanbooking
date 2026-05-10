@@ -5,7 +5,7 @@ import { bookingSchema, type BookingFormData } from "@/lib/bookingSchema";
 import { calculateOrderPrice } from "@/lib/priceCalculator";
 import { useHolidayRate } from "@/lib/holidayChecker";
 import { loadHolidaysAroundNow } from "@/lib/holidayCache";
-import { submitBooking } from "@/lib/apiClient";
+import { submitBooking, UncertainSubmitError } from "@/lib/apiClient";
 import type {
   BookingInput,
   BookingItem,
@@ -38,6 +38,7 @@ export function BookingForm() {
   const [submitError, setSubmitError] = useState<string | null>(null);
   const [submitHint, setSubmitHint] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
+  const [submitLocked, setSubmitLocked] = useState(false);
   const [result, setResult] = useState<BookingResult | null>(null);
   const [resultTotal, setResultTotal] = useState(0);
   const [resultInput, setResultInput] = useState<BookingInput | null>(null);
@@ -116,7 +117,13 @@ export function BookingForm() {
       setResultTotal(breakdown?.grandTotal ?? 0);
       setResultInput(payload);
     } catch (err) {
-      setSubmitError(err instanceof Error ? err.message : "送出失敗");
+      if (err instanceof UncertainSubmitError) {
+        console.error("[booking] uncertain submit:", err);
+        setSubmitLocked(true);
+        setSubmitError(err.message);
+      } else {
+        setSubmitError(err instanceof Error ? err.message : "送出失敗");
+      }
     } finally {
       setSubmitting(false);
     }
@@ -169,14 +176,45 @@ export function BookingForm() {
               {submitHint}
             </div>
           )}
-          {submitError && (
-            <div className="rounded-md border border-rose-200 bg-rose-50 p-3 text-sm text-rose-700">
-              {submitError}
+          {submitLocked ? (
+            <div className="space-y-3 rounded-md border-2 border-rose-300 bg-rose-50 p-4 text-sm text-rose-800">
+              <div className="font-semibold">⚠️ 系統未能確認回應，您的訂單可能已成立</div>
+              <div className="text-xs leading-relaxed text-rose-700">
+                請<strong>勿重複送出</strong>，避免建立多筆訂單。請加 LINE 客服{" "}
+                <a
+                  href="https://lin.ee/N83l3q2"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="font-semibold underline"
+                >
+                  @waterman
+                </a>{" "}
+                並提供姓名與電話，我們將協助您確認訂單編號。
+              </div>
+              <div className="text-[11px] text-rose-500">錯誤訊息：{submitError}</div>
+              <button
+                type="button"
+                onClick={() => window.location.reload()}
+                className="w-full rounded-md border border-rose-300 bg-white py-2 text-sm font-medium text-rose-700 hover:bg-rose-100"
+              >
+                重新整理表單（確認後再下單）
+              </button>
             </div>
+          ) : (
+            submitError && (
+              <div className="rounded-md border border-rose-200 bg-rose-50 p-3 text-sm text-rose-700">
+                {submitError}
+              </div>
+            )
           )}
         </div>
 
-        <PriceBar breakdown={breakdown} priceReady={priceReady} submitting={submitting} />
+        <PriceBar
+          breakdown={breakdown}
+          priceReady={priceReady}
+          submitting={submitting}
+          locked={submitLocked}
+        />
       </form>
     </FormProvider>
   );

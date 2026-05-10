@@ -4,9 +4,10 @@ interface PriceBarProps {
   breakdown: OrderPriceBreakdown | null;
   priceReady: boolean;
   submitting: boolean;
+  locked?: boolean;
 }
 
-export function PriceBar({ breakdown, priceReady, submitting }: PriceBarProps) {
+export function PriceBar({ breakdown, priceReady, submitting, locked }: PriceBarProps) {
   const hasItems = !!breakdown && breakdown.items.length > 0;
   return (
     <div className="sticky bottom-0 z-10 border-t border-ocean-100 bg-white/95 px-4 py-3 backdrop-blur sm:rounded-2xl sm:border sm:shadow-lg">
@@ -35,10 +36,10 @@ export function PriceBar({ breakdown, priceReady, submitting }: PriceBarProps) {
         </div>
         <button
           type="submit"
-          disabled={submitting || !hasItems}
+          disabled={submitting || !hasItems || locked}
           className="shrink-0 rounded-lg bg-ocean-600 px-6 py-3 font-semibold text-white shadow-sm transition hover:bg-ocean-700 disabled:cursor-not-allowed disabled:bg-slate-300"
         >
-          {submitting ? "送出中…" : "送出訂單"}
+          {submitting ? "送出中…" : locked ? "請聯絡客服" : "送出訂單"}
         </button>
       </div>
     </div>
